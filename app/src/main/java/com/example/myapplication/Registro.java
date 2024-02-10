@@ -1,19 +1,17 @@
-package com.example.apptiendaluis;
+package com.example.myapplication;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import com.example.apptiendaluis.model.Persona;
+import androidx.appcompat.widget.Toolbar;
+import com.example.myapplication.model.Persona;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.UUID;
 
 public class Registro extends AppCompatActivity {
@@ -33,16 +31,13 @@ public class Registro extends AppCompatActivity {
         edt_nombre = findViewById(R.id.nombre);
         edt_apellidos = findViewById(R.id.apellidos);
         edt_telf = findViewById(R.id.telefono);
-
-
-
-
-
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 
     private void inicializaFirebase(){
         FirebaseApp.initializeApp(this);
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance("https://my-application-3778e-default-rtdb.europe-west1.firebasedatabase.app");
         databaseReference = firebaseDatabase.getReference();
     }
 
@@ -120,12 +115,13 @@ public class Registro extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_main,menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
         String email = edt_email.getText().toString().trim();
         String password = edt_pass.getText().toString().trim();
         String barrio = edt_barrio.getText().toString().trim();
@@ -133,31 +129,27 @@ public class Registro extends AppCompatActivity {
         String apellidos = edt_apellidos.getText().toString().trim();
         String telefono = edt_telf.getText().toString().trim();
 
-        switch (item.getItemId()) {
-            case R.id.icon_add:
-                if(validarCampos()){
-                    Persona persona = new Persona();
-                    persona.setUid(UUID.randomUUID().toString());
-                    persona.setCorreo(email);
-                    persona.setPassword(password);
-                    persona.setBarrio(barrio);
-                    persona.setNombre(nombre);
-                    persona.setApellidos(apellidos);
-                    persona.setTelefono(Integer.parseInt(telefono));
-
-                    Toast.makeText(this, "Añadido", Toast.LENGTH_SHORT).show();
-                    limpiarCampos();
-                }
-                break;
-            case R.id.icon_save:
-                Toast.makeText(this, "Actulizar", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.icon_delete:
-                Toast.makeText(this, "Eliminado", Toast.LENGTH_SHORT).show();
-                break;
-            default:
-                break;
+        if (item.getItemId() == R.id.icon_add) {
+            if (validarCampos()) {
+                Persona persona = new Persona();
+                persona.setUid(UUID.randomUUID().toString());
+                persona.setCorreo(email);
+                persona.setPassword(password);
+                persona.setBarrio(barrio);
+                persona.setNombre(nombre);
+                persona.setApellidos(apellidos);
+                persona.setTelefono(Integer.parseInt(telefono));
+                databaseReference.child("Persona").child(persona.getUid()).setValue(persona);
+                Toast.makeText(this, "Añadido", Toast.LENGTH_SHORT).show();
+                limpiarCampos();
+            }
+        } else if (item.getItemId() == R.id.icon_save) {
+            Toast.makeText(this, "Actualizar", Toast.LENGTH_SHORT).show();
+        } else if (item.getItemId() == R.id.icon_delete) {
+            Toast.makeText(this, "Eliminado", Toast.LENGTH_SHORT).show();
         }
+
         return super.onOptionsItemSelected(item);
+
     }
 }

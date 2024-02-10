@@ -1,17 +1,17 @@
-package com.example.apptiendaluis.model;
+package com.example.myapplication.model;
 
-public class persona {
+public class Persona {
 
-    public String uid;
-    public String nombre;
-    public String apellidos;
-    public int telefono;
-    public String barrio;
-    public String correo;
-    public String password;
+    private String uid;
+    private String nombre;
+    private String apellidos;
+    private int telefono;
+    private String barrio;
+    private String correo;
+    private String password;
 
 
-    public persona() {
+    public Persona() {
 
     }
 
@@ -73,7 +73,7 @@ public class persona {
 
     @Override
     public String toString() {
-        return "persona{" +
+        return "Persona{" +
                 "uid='" + uid + '\'' +
                 ", Nombre='" + nombre + '\'' +
                 ", Apellido='" + apellidos + '\'' +
@@ -82,3 +82,4 @@ public class persona {
                 '}';
     }
 }
+

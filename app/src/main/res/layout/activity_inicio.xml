@@ -15,8 +15,8 @@
         android:text="Lista de Personas"/>
 
     <ListView
-            android:id="@+id/lista_personas"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+        android:id="@+id/lista_personas"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>
